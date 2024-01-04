@@ -2,27 +2,79 @@ import "./style.css";
 import "flowbite";
 import axios from "axios";
 
-// تعریف یک instance از axios با baseURL
 const api = axios.create({
-  baseURL: "http://localhost:2000", // آدرس baseURL خود را اینجا قرار دهید
+  baseURL: "http://localhost:2000",
 });
 
-const API_DATA = "/data"; // آدرس data خود را اینجا قرار دهید
+const API_DATA = "/data";
 
+const myForm = <HTMLFormElement>document.querySelector("#myForm");
 const result = <HTMLDivElement>document.getElementById("result");
 const nameInput = <HTMLInputElement>document.getElementById("name");
 const dateInput = <HTMLInputElement>document.getElementById("date");
+
 const descriptionInput = <HTMLTextAreaElement>(
   document.getElementById("description")
 );
+const alertName = <HTMLSpanElement>document.querySelector("#alret-one");
+const alertِDate = <HTMLSpanElement>document.querySelector("#alret-two");
+const alertDescription = <HTMLSpanElement>(
+  document.querySelector("#alret-three")
+);
+
+const corectModalElem = <HTMLDivElement>document.querySelector("#corect-modal");
+const disCorectModalElem = <HTMLDivElement>(
+  document.querySelector("#discorect-modal")
+);
+
+myForm.addEventListener("submit", controller);
+
+const corectModalHandler = () => {
+  corectModalElem.style.display = "block";
+  setTimeout(() => {
+    corectModalElem.style.display = "none";
+  }, 5000);
+};
+
+const disCorectModalHandler = () => {
+  disCorectModalElem.style.display = "block";
+  setTimeout(() => {
+    disCorectModalElem.style.display = "none";
+  }, 5000);
+};
+
+function controller(e: any) {
+  e.preventDefault();
+  const conditionName =
+    nameInput.value.includes("_") && nameInput.value.length > 4;
+  const conditionDate = dateInput.value !== "";
+  const conditionDescription = descriptionInput.value.length > 8;
+
+  if (conditionName && conditionDescription && conditionDate) {
+    corectModalHandler();
+    alertName.style.display = "none";
+    alertِDate.style.display = "none";
+    alertDescription.style.display = "none";
+    postORpatch();
+  }
+
+  if (!conditionName) {
+    alertName.style.display = "block";
+    disCorectModalHandler();
+  }
+  if (!conditionDate) {
+    alertِDate.style.display = "block";
+    disCorectModalHandler();
+  }
+  if (!conditionDescription) {
+    alertDescription.style.display = "block";
+    disCorectModalHandler();
+  }
+}
+
 const submit = <HTMLButtonElement>document.getElementById("submit");
 let creatingNewUser: boolean = true;
 let editNum: number;
-
-submit.addEventListener("click", async (event) => {
-  event.preventDefault();
-  postORpatch();
-});
 
 type UserType = {
   name: string;

@@ -8,30 +8,31 @@
   </head>
   <body>
     <div class="flex mx-auto container">
+      <div id="corect-modal" class="modal">با موفقیت ثبت شد</div>
+      <div id="discorect-modal" class="modal">
+        اطلاعات خواسته شده را با دقت پر کنید
+      </div>
       <form
         id="myForm"
         action="#"
-        class="h-96 w-80 grid gap-2 shadow-2xl rounded-lg p-8 m-8"
+        class="h-[500px] w-[400px] grid gap-5 shadow-2xl rounded-lg p-8 mt-8"
       >
-        <div class="grid">
+        <div class="grid gap-0">
           <label for="name">Name:</label>
-          <input
-            type="text"
-            id="name"
-            required
-            class="p-2 mb-4 rounded w-full"
-          />
+          <input type="text" id="name" class="rounded w-full" />
+          <span class="text-red-600 hidden text-sm" id="alret-one"
+            >* Name value should not be empty and should be more than 4
+            characters and there should be an Underline sign in it.*</span
+          >
         </div>
-        <div class="grid">
+        <div class="grid gap-0">
           <label for="date">Date:</label>
-          <input
-            type="date"
-            id="date"
-            required
-            class="p-2 mb-4 rounded w-full"
-          />
+          <input type="date" id="date" class="rounded w-full" />
+          <span class="text-red-600 hidden text-sm" id="alret-two"
+            >*The date must not be empty*</span
+          >
         </div>
-        <div class="grid">
+        <div class="grid gap-0">
           <label for="description">Description:</label>
           <textarea
             name="description"
@@ -39,8 +40,11 @@
             cols="10"
             rows="2"
             class="resize-none w-full"
-            required
           ></textarea>
+          <span class="text-red-600 hidden text-sm" id="alret-three"
+            >* The description value should not be empty and should be more than
+            8 characters*</span
+          >
         </div>
         <button
           type="submit"
@@ -110,13 +114,18 @@
     >
       <div class="bg-white p-4 rounded-lg text-center">
         <p class="mb-4">Are you sure you want to delete this item?</p>
-        <button id="confirmDelete" class="bg-red-600 text-white px-4 py-2 mr-2 rounded-md">
+        <button
+          id="confirmDelete"
+          class="bg-red-600 text-white px-4 py-2 mr-2 rounded-md"
+        >
           OK
         </button>
-        <button id="cancelDelete" class="bg-gray-400 px-4 py-2 rounded-md">Cancel</button>
+        <button id="cancelDelete" class="bg-gray-400 px-4 py-2 rounded-md">
+          Cancel
+        </button>
       </div>
     </div>
 
-    <script type="module" src="/src/main.ts"></script>
+    <script type="module" defer src="/src/main.ts"></script>
   </body>
 </html>
