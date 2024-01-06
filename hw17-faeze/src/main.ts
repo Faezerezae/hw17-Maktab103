@@ -12,10 +12,23 @@ const myForm = <HTMLFormElement>document.querySelector("#myForm");
 const result = <HTMLDivElement>document.getElementById("result");
 const nameInput = <HTMLInputElement>document.getElementById("name");
 const dateInput = <HTMLInputElement>document.getElementById("date");
-
 const descriptionInput = <HTMLTextAreaElement>(
   document.getElementById("description")
 );
+
+
+
+const paginationContainer=<HTMLDivElement>document.getElementById("pagination-container");
+const paginationButtons = <HTMLDivElement>(
+  document.getElementById("pagination-buttons")
+);
+const onClickNext = <HTMLDivElement>(
+  document.getElementById("on-click-next-page")
+);
+const onClickPrevious = <HTMLDivElement>(
+  document.getElementById("on-click-previous-page")
+);
+
 const alertName = <HTMLSpanElement>document.querySelector("#alret-one");
 const alertِDate = <HTMLSpanElement>document.querySelector("#alret-two");
 const alertDescription = <HTMLSpanElement>(
@@ -92,16 +105,6 @@ function postORpatch() {
 }
 
 //-------------------------------get
-const paginationButtons = <HTMLDivElement>(
-  document.getElementById("pagination-buttons")
-);
-const onClickNext = <HTMLDivElement>(
-  document.getElementById("on-click-next-page")
-);
-const onClickPrevious = <HTMLDivElement>(
-  document.getElementById("on-click-previous-page")
-);
-
 let totalPages: number = 0;
 let pageNumber: number = 1;
 let isLoading: boolean = true;
@@ -118,13 +121,20 @@ async function onLoad(page: number = 1) {
     const data = response.data;
     pageNumber = page;
     totalPages = Math.ceil(response.headers["x-total-count"] / 4);
-    paginationButtonsListRender(totalPages, pageNumber);
+    if (Math.ceil(response.headers["x-total-count"]) <= 4) {
+      paginationContainer.classList.add("hidden")
+    } else {
+      paginationContainer.classList.remove("hidden")
+      paginationContainer.classList.add("flex")
+      paginationButtonsListRender(totalPages, pageNumber);
+    }
     renderUser(data);
   } catch (error) {
     console.error("Error:", error);
   }
 }
 
+//-----------------------------------------------------------pagination
 function paginationButton(page: number, isActive = false) {
   if (isActive) {
     return `
@@ -237,8 +247,7 @@ async function editFetchValue(id: number) {
     dateInput.value = date;
     descriptionInput.value = description;
     submit.textContent = "save";
-    submit.removeEventListener("click", postFetchValue);
-    submit.addEventListener("click", patchEditFunc);
+    myForm.addEventListener("submit", controller);
     creatingNewUser = false;
   } catch (error) {
     console.error("Error:", error);
@@ -308,7 +317,7 @@ function renderUser(data: Array<UserType>) {
           <button class="btn-delete bg-red-600 rounded-lg px-2 py-3 text-sm text-white">
             delete
           </button>
-          <button class="btn-edit bg-orange-500 rounded-lg px-2 py-3 text-sm text-white">
+          <button class="btn-edit bg-orange-500 rounded-lg px-2 py-3 text-sm text-white ">
             edit
           </button>
         </div>
