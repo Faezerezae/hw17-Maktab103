@@ -37,3 +37,7 @@
     display: none;
     background-image:linear-gradient(red , yellow);
   }
+
+  .active {
+    @apply text-white bg-black whitespace-nowrap p-2 border-2 border-black rounded-full;
+  }

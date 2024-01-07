@@ -7,7 +7,7 @@
     <title>Vite + TS</title>
   </head>
   <body>
-    <div class="flex mx-auto container">
+    <div class="flex mx-auto container gap-2">
       <div id="corect-modal" class="modal">با موفقیت ثبت شد</div>
       <div id="discorect-modal" class="modal">
         اطلاعات خواسته شده را با دقت پر کنید
@@ -55,6 +55,11 @@
         </button>
       </form>
       <div class="m-4 w-full">
+        <div class="flex gap-3 justify-start items-center brands-button">
+          <button id="all" class="active whitespace-nowrap p-2 border-2 border-black rounded-full">All</button
+          ><button id="done" class="whitespace-nowrap p-2 border-2 border-black rounded-full">Done</button>
+        </div>
+
         <div
           id="result"
           class="product-list mx-auto grid h-[480px] my-4 grid-cols-1 xl:grid-cols-2 items-start justify-center overflow-y-scroll"
@@ -125,7 +130,6 @@
         </button>
       </div>
     </div>
-
     <script type="module" defer src="/src/main.ts"></script>
   </body>
 </html>

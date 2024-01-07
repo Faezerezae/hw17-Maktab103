@@ -16,9 +16,29 @@ const descriptionInput = <HTMLTextAreaElement>(
   document.getElementById("description")
 );
 
+const button_container = document.querySelectorAll(".brands-button button");
+const mostAlltask = <HTMLButtonElement>document.getElementById("all");
 
+const allDone = <HTMLButtonElement>document.getElementById("done");
 
-const paginationContainer=<HTMLDivElement>document.getElementById("pagination-container");
+let tag: string = "All";
+console.log(tag);
+button_container.forEach((buttonEvent) => {
+  buttonEvent.addEventListener("click", change);
+});
+function change(this: any) {
+  button_container.forEach(
+    (tag: any) =>
+      (tag.classList =
+        "whitespace-nowrap p-2 border-2 border-black rounded-full")
+  );
+  this.classList = "active";
+  tag = this.innerHTML;
+}
+
+const paginationContainer = <HTMLDivElement>(
+  document.getElementById("pagination-container")
+);
 const paginationButtons = <HTMLDivElement>(
   document.getElementById("pagination-buttons")
 );
@@ -90,10 +110,11 @@ let creatingNewUser: boolean = true;
 let editNum: number;
 
 type UserType = {
-  name: string;
-  date: string;
-  description: string;
   id: number;
+  name: string;
+  date: Date;
+  description: string;
+  status: boolean;
 };
 
 function postORpatch() {
@@ -108,6 +129,7 @@ function postORpatch() {
 let totalPages: number = 0;
 let pageNumber: number = 1;
 let isLoading: boolean = true;
+let perPage: number = 4;
 
 async function onLoad(page: number = 1) {
   if (isLoading) {
@@ -115,17 +137,19 @@ async function onLoad(page: number = 1) {
     console.log(result);
   }
   try {
-    const response = await api.get(`${API_DATA}?_page=${page}&_limit=4`);
+    const response = await api.get(
+      `${API_DATA}?_page=${page}&_limit=${perPage}`
+    );
     isLoading = false;
     console.log(response);
     const data = response.data;
     pageNumber = page;
-    totalPages = Math.ceil(response.headers["x-total-count"] / 4);
-    if (Math.ceil(response.headers["x-total-count"]) <= 4) {
-      paginationContainer.classList.add("hidden")
+    totalPages = Math.ceil(response.headers["x-total-count"] / perPage);
+    if (Math.ceil(response.headers["x-total-count"]) <= perPage) {
+      paginationContainer.classList.add("hidden");
     } else {
-      paginationContainer.classList.remove("hidden")
-      paginationContainer.classList.add("flex")
+      paginationContainer.classList.remove("hidden");
+      paginationContainer.classList.add("flex");
       paginationButtonsListRender(totalPages, pageNumber);
     }
     renderUser(data);
@@ -181,6 +205,10 @@ onClickNext.addEventListener("click", () => {
   }
 });
 
+mostAlltask.addEventListener("click", () => {
+  onLoad();
+});
+
 onLoad();
 //----------------------------post
 async function postFetchValue() {
@@ -189,6 +217,7 @@ async function postFetchValue() {
       name: nameInput.value,
       date: dateInput.value,
       description: descriptionInput.value,
+      status: false,
     });
     console.log("Post Response Data:", postResponse.data);
     onLoad();
@@ -203,13 +232,20 @@ result.addEventListener("click", handleResultClick);
 
 function handleResultClick(e: any) {
   if (e.target.classList.contains("btn-delete")) {
-    const deleteUser = e.target.parentElement.parentElement.dataset.set;
+    const deleteUser =
+      e.target.parentElement.parentElement.parentElement.dataset.set;
     showDeleteConfirmationModal(deleteUser);
   }
   if (e.target.classList.contains("btn-edit")) {
-    const editUser = e.target.parentElement.parentElement.dataset.set;
+    const editUser =
+      e.target.parentElement.parentElement.parentElement.dataset.set;
     editFetchValue(editUser);
-    editNum = e.target.parentElement.parentElement.dataset.set;
+    editNum = e.target.parentElement.parentElement.parentElement.dataset.set;
+  }
+  if (e.target.classList.contains("inputStatus")) {
+    const doneUser =
+      e.target.parentElement.parentElement.parentElement.dataset.set;
+    patchCheckboxDone(doneUser);
   }
 }
 
@@ -302,28 +338,42 @@ async function deleteFetchValue(id: number) {
 function renderUser(data: Array<UserType>) {
   result.innerHTML = "";
   data.forEach((element: UserType) => {
-    const { id, name, date, description } = element;
+    const { id, name, date, description, status } = element;
     result.insertAdjacentHTML(
       "beforeend",
       `
-      <div class="mx-auto rounded-lg grid justify-between items-center w-[400px] h-[200px]
-      p-4 shadow-lg gap-4 m-5" data-set="${id}">
-        <p class="w-full">
-          name: ${name}
-        </p>
-        <p class="w-full">date: ${date}</p>
-        <p class="w-full truncate">description: ${description}</p>
-        <div class="flex gap-5 w-full">
-          <button class="btn-delete bg-red-600 rounded-lg px-2 py-3 text-sm text-white">
+      <div
+      class="mx-auto rounded-lg grid justify-between items-center w-[400px] h-[200px] p-4 shadow-lg gap-4 m-5"
+      data-set="${id}"
+    >
+      <p class="w-full">name: ${name}</p>
+      <p class="w-full">date: ${date}</p>
+      <p class="w-full truncate">description: ${description}</p>
+      <div class="flex gap-5 w-full justify-between">
+        <div class="flex items-center gap-1">
+          <label for="checkBox${id}">done: </label>
+          <input type="checkbox" class="inputStatus" id="checkBox${id}" />
+        </div>
+        <div class="flex gap-2">
+          <button
+            class="btn-delete bg-red-600 rounded-lg px-2 py-3 text-sm text-white"
+          >
             delete
           </button>
-          <button class="btn-edit bg-orange-500 rounded-lg px-2 py-3 text-sm text-white ">
+          <button
+            class="btn-edit bg-orange-500 rounded-lg px-2 py-3 text-sm text-white"
+          >
             edit
           </button>
         </div>
       </div>
+    </div>
     `
     );
+    const checkInput = <HTMLInputElement>(
+      document.querySelector(`#checkBox${id}`)
+    );
+    checkInput.checked = status;
   });
 }
 
@@ -335,3 +385,30 @@ function resetForm() {
   submit.textContent = "submit";
   creatingNewUser = true;
 }
+
+//---------------------------------patch for checkbox done
+
+allDone.addEventListener("click",async () => {
+  const response = await api.get(`${API_DATA}?status=true`);
+  const data = response.data;
+  renderUser(data);
+  paginationContainer.classList.add("hidden");
+});
+
+async function patchCheckboxDone(id: number) {
+  try {
+    const response = await api.get(`${API_DATA}/${id}`);
+    const data = response.data;
+    console.log(data);
+    data.status = !data.status;
+    const patchResponse = await api.patch(`${API_DATA}/${id}`, data, {
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    });
+    console.log("Patch Success:", patchResponse);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
