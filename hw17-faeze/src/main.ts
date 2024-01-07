@@ -3,7 +3,7 @@ import "flowbite";
 import axios from "axios";
 import { patchCheckboxDone } from "./filter";
 import { editFetchValue } from "./editUser";
-import { showDeleteConfirmationModal } from "./deletUser";
+import { showDeleteConfirmationModal } from "./deleteUser";
 import { controller } from "./validation";
 import { onLoad } from "./getAllUser";
 
