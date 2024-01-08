@@ -32,7 +32,7 @@ function change(this: any) {
   button_container.forEach(
     (tag: any) =>
       (tag.classList =
-        "whitespace-nowrap p-2 border-2 border-black rounded-full")
+        "whitespace-nowrap p-1 px-10 border border-black rounded-full")
   );
   this.classList = "active";
   tag = this.innerHTML;

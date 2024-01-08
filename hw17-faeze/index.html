@@ -6,63 +6,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + TS</title>
   </head>
-  <body>
-    <div class="flex mx-auto container gap-2">
+  <body class="font-sans">
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 mx-auto container items-center justify-center gap-10 p-2"
+    >
       <div id="corect-modal" class="modal">با موفقیت ثبت شد</div>
       <div id="discorect-modal" class="modal">
         اطلاعات خواسته شده را با دقت پر کنید
       </div>
-      <form
-        id="myForm"
-        action="#"
-        class="h-[500px] w-[400px] grid gap-5 shadow-2xl rounded-lg p-8 mt-8"
-      >
-        <div class="grid gap-0">
-          <label for="name">Name:</label>
-          <input type="text" id="name" class="rounded w-full" />
-          <span class="text-red-600 hidden text-sm" id="alret-one"
-            >* Name value should not be empty and should be more than 4
-            characters and there should be an Underline sign in it.*</span
-          >
-        </div>
-        <div class="grid gap-0">
-          <label for="date">Date:</label>
-          <input type="date" id="date" class="rounded w-full" />
-          <span class="text-red-600 hidden text-sm" id="alret-two"
-            >*The date must not be empty*</span
-          >
-        </div>
-        <div class="grid gap-0">
-          <label for="description">Description:</label>
-          <textarea
-            name="description"
-            id="description"
-            cols="10"
-            rows="2"
-            class="resize-none w-full"
-          ></textarea>
-          <span class="text-red-600 hidden text-sm" id="alret-three"
-            >* The description value should not be empty and should be more than
-            8 characters*</span
-          >
-        </div>
-        <button
-          type="submit"
-          id="submit"
-          class="bg-blue-500 text-white px-4 py-2 rounded"
+      <div class="grid gap-5">
+        <h4 class="font-bold">Todo List:</h4>
+        <form
+          id="myForm"
+          action="#"
+          class="h-auto w-full grid gap-4 shadow-2xl rounded-lg p-4 items-center"
         >
-          Submit
-        </button>
-      </form>
-      <div class="m-4 w-full">
+          <div class="grid grid-cols-2 justify-center items-start gap-10">
+            <div class="grid gap-0">
+              <label for="name">Name:</label>
+              <input type="text" id="name" class="rounded-md w-full" />
+              <span class="text-red-600 hidden text-sm" id="alret-one"
+                >* Name value should not be empty and should be more than 4
+                characters and there should be an Underline sign in it.*</span
+              >
+            </div>
+            <div class="grid gap-0">
+              <label for="date">Date:</label>
+              <input type="date" id="date" class="rounded-md w-full" />
+              <span class="text-red-600 hidden text-sm" id="alret-two"
+                >*The date must not be empty*</span
+              >
+            </div>
+          </div>
+          <div class="grid gap-0">
+            <label for="description">Description:</label>
+            <textarea
+              name="description"
+              id="description"
+              cols="10"
+              rows="2"
+              class="resize-none w-full rounded-md"
+            ></textarea>
+            <span class="text-red-600 hidden text-sm" id="alret-three"
+              >* The description value should not be empty and should be more
+              than 8 characters*</span
+            >
+          </div>
+          <button
+            type="submit"
+            id="submit"
+            class="bg-blue-500 text-white px-4 py-2 rounded-md"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+      <div class="w-full">
         <div class="flex gap-3 justify-start items-center brands-button">
-          <button id="all" class="active whitespace-nowrap p-2 border-2 border-black rounded-full">All</button
-          ><button id="done" class="whitespace-nowrap p-2 border-2 border-black rounded-full">Done</button>
+          <button
+            id="all"
+            class="active whitespace-nowrap p-1 px-10 border border-black rounded-full"
+          >
+            All</button
+          ><button
+            id="done"
+            class="whitespace-nowrap p-1 px-10 border border-black rounded-full"
+          >
+            Done
+          </button>
         </div>
 
         <div
           id="result"
-          class="product-list mx-auto grid h-[480px] my-4 grid-cols-1 xl:grid-cols-2 items-start justify-center overflow-y-scroll"
+          class="task-list mx-auto grid gap-2 h-[450px] my-4 grid-cols-1 xl:grid-cols-2 items-start justify-center overflow-y-scroll bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-orange-900 via-amber-100 to-orange-900 rounded-lg p-2"
         ></div>
         <div
           class="items-center justify-around border-t border-gray-200 px-2 my-4"
@@ -70,7 +86,7 @@
         >
           <div class="-mt-px flex w-0 flex-1">
             <p
-              class="curser-pointer inline-flex items-center border-t-2 border-transparent pr-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-400 hover:text-gray-700"
+              class="curser-pointer inline-flex items-center border-t-2 border-transparent pt-4 text-sm font-medium text-gray-500 hover:border-gray-400 hover:text-gray-700"
               id="on-click-previous-page"
             >
               <svg
@@ -91,7 +107,7 @@
 
           <div class="-mt-px flex w-0 flex-1 justify-end">
             <p
-              class="curser-pointer inline-flex items-center border-t-2 border-transparent pl-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-400 hover:text-gray-700"
+              class="curser-pointer inline-flex items-center border-t-2 border-transparent pt-4 text-sm font-medium text-gray-500 hover:border-gray-400 hover:text-gray-700"
               id="on-click-next-page"
             >
               <svg
