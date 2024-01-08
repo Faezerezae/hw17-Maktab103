@@ -1,4 +1,5 @@
-import { onLoad, totalPages } from "./getAllUser";
+import { onLoad, totalPages,mostAlltask } from "./getAllUser";
+import { filterStatusT ,allDone} from "./filter";
 let pageNumber: number = 1;
 
 export const paginationContainer = <HTMLDivElement>(
@@ -46,19 +47,37 @@ export function paginationButtonsListRender(
 }
 
 paginationButtons.addEventListener("click", (ev: any) => {
-  onLoad(Number(ev.target.innerText));
+  const clickedPageNumber = Number(ev.target.innerText);
+  if (!isNaN(clickedPageNumber)) {
+    pageNumber = clickedPageNumber;
+    if (mostAlltask.classList.contains("active")) {
+      // "all" button is active
+      onLoad(pageNumber);
+    } else if (allDone.classList.contains("active")) {
+      // "done" button is active
+      filterStatusT(pageNumber);
+    }
+  }
 });
 
 onClickPrevious.addEventListener("click", () => {
   if (pageNumber > 1) {
     pageNumber--;
-    onLoad(pageNumber);
+    if (mostAlltask.classList.contains("active")) {
+      onLoad(pageNumber);
+    } else if (allDone.classList.contains("active")) {
+      filterStatusT(pageNumber);
+    }
   }
 });
 
 onClickNext.addEventListener("click", () => {
   if (pageNumber < totalPages) {
     pageNumber++;
-    onLoad(pageNumber);
+    if (mostAlltask.classList.contains("active")) {
+      onLoad(pageNumber);
+    } else if (allDone.classList.contains("active")) {
+      filterStatusT(pageNumber);
+    }
   }
 });

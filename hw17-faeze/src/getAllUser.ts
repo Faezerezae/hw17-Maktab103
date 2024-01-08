@@ -5,7 +5,7 @@ import {
 } from "./pagination.ts";
 import { renderUser } from "./renderUser.ts";
 
-const mostAlltask = <HTMLButtonElement>document.getElementById("all");
+ export const mostAlltask = <HTMLButtonElement>document.getElementById("all");
 let isLoading: boolean = true;
 export let perPage: number = 4;
 export let totalPages: number = 0;
@@ -39,5 +39,6 @@ export async function onLoad(page: number = 1) {
 }
 
 mostAlltask.addEventListener("click", () => {
-  onLoad();
+  pageNumber = 1;
+  onLoad(pageNumber);
 });

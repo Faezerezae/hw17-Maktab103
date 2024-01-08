@@ -1,7 +1,14 @@
-import { API_DATA, api } from "./main.ts";
-import { paginationContainer } from "./pagination.ts";
+import { API_DATA, api, result } from "./main.ts";
+import {
+  paginationContainer,
+  paginationButtonsListRender,
+} from "./pagination.ts";
 import { renderUser } from "./renderUser.ts";
-const allDone = <HTMLButtonElement>document.getElementById("done");
+export const allDone = <HTMLButtonElement>document.getElementById("done");
+let isLoading: boolean = true;
+export let perPage: number = 4;
+export let totalPages: number = 0;
+let pageNumber: number = 1;
 
 export async function patchCheckboxDone(id: number) {
   try {
@@ -20,14 +27,34 @@ export async function patchCheckboxDone(id: number) {
   }
 }
 
-export async function filterStatusT() {
-  const response = await api.get(`${API_DATA}?status=true`);
-  console.log(response);
-  const data = response.data;
-  renderUser(data);
-  paginationContainer.classList.add("hidden");
+export async function filterStatusT(page: number = 1) {
+  if (isLoading) {
+    result.innerHTML = '<p class="text-6xl"> loading ...<p>';
+    console.log(result);
+  }
+  try {
+    const response = await api.get(
+      `${API_DATA}?_page=${page}&_limit=${perPage}&status=true`
+    );
+    isLoading = false;
+    console.log(response);
+    const data = response.data;
+    pageNumber = page;
+    totalPages = Math.ceil(response.headers["x-total-count"] / perPage);
+    if (Math.ceil(response.headers["x-total-count"]) <= perPage) {
+      paginationContainer.classList.add("hidden");
+    } else {
+      paginationContainer.classList.remove("hidden");
+      paginationContainer.classList.add("flex");
+      paginationButtonsListRender(totalPages, pageNumber);
+    }
+    renderUser(data);
+  } catch (error) {
+    console.error("Error:", error);
+  }
 }
 
 allDone.addEventListener("click", () => {
-  filterStatusT();
+  pageNumber = 1;
+  filterStatusT(pageNumber);
 });
