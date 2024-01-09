@@ -5,7 +5,7 @@ import {
 } from "./pagination.ts";
 import { renderUser } from "./renderUser.ts";
 
- export const mostAlltask = <HTMLButtonElement>document.getElementById("all");
+export const mostAlltask = <HTMLButtonElement>document.getElementById("all");
 let isLoading: boolean = true;
 export let perPage: number = 4;
 export let totalPages: number = 0;

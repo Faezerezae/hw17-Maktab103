@@ -1,5 +1,5 @@
-import { onLoad, totalPages,mostAlltask } from "./getAllUser";
-import { filterStatusT ,allDone} from "./filter";
+import { onLoad, totalPages, mostAlltask } from "./getAllUser";
+import { filterStatusT, allDone } from "./filter";
 let pageNumber: number = 1;
 
 export const paginationContainer = <HTMLDivElement>(
@@ -51,10 +51,8 @@ paginationButtons.addEventListener("click", (ev: any) => {
   if (!isNaN(clickedPageNumber)) {
     pageNumber = clickedPageNumber;
     if (mostAlltask.classList.contains("active")) {
-      // "all" button is active
       onLoad(pageNumber);
     } else if (allDone.classList.contains("active")) {
-      // "done" button is active
       filterStatusT(pageNumber);
     }
   }
