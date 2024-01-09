@@ -44,22 +44,27 @@ export const submit = <HTMLButtonElement>document.getElementById("submit");
 //----------------------------deligation for delete and edit
 result.addEventListener("click", handleResultClick);
 export let editNum: number;
+
 function handleResultClick(e: any) {
-  if (e.target.classList.contains("btn-delete")) {
-    const deleteUser =
-      e.target.parentElement.parentElement.parentElement.dataset.set;
-    showDeleteConfirmationModal(deleteUser);
-  }
-  if (e.target.classList.contains("btn-edit")) {
-    const editUser =
-      e.target.parentElement.parentElement.parentElement.dataset.set;
-    editFetchValue(editUser);
-    editNum = e.target.parentElement.parentElement.parentElement.dataset.set;
-  }
-  if (e.target.classList.contains("inputStatus")) {
-    const doneUser =
-      e.target.parentElement.parentElement.parentElement.dataset.set;
-    patchCheckboxDone(doneUser);
+  const target=<HTMLInputElement>e.target;
+  switch (true) {
+    case target.classList.contains("btn-delete"):
+      const deleteUser =
+        e.target.parentElement.parentElement.parentElement.dataset.set;
+      showDeleteConfirmationModal(deleteUser);
+      break;
+    case target.classList.contains("btn-edit"):
+      const editUser =
+        e.target.parentElement.parentElement.parentElement.dataset.set;
+      editFetchValue(editUser);
+      editNum = e.target.parentElement.parentElement.parentElement.dataset.set;
+      break;
+
+    case target.classList.contains("inputStatus"):
+      const doneUser =
+        e.target.parentElement.parentElement.parentElement.dataset.set;
+      patchCheckboxDone(doneUser);
+      break;
   }
 }
 
